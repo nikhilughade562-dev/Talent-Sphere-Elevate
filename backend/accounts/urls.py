@@ -5,7 +5,8 @@ from .views import (
     UserLoginView,
     RecruiterRegisterView,
     RecruiterLoginView,
-    ProfileView
+    ProfileView,
+    ResumeUploadView,
 )
 
 urlpatterns = [
@@ -19,5 +20,11 @@ urlpatterns = [
     path("recruiter/login/", RecruiterLoginView.as_view()),
 
     path("profile/", ProfileView.as_view()),
+
+    path(
+    "profile/resume/",
+    ResumeUploadView.as_view(),
+    name="resume-upload"
+),
 
 ]

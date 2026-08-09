@@ -5,6 +5,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.parsers import MultiPartParser, FormParser
+from .resume_parser import parse_resume
 
 from .serializers import (
     UserRegisterSerializer,
@@ -161,4 +163,129 @@ class ProfileView(APIView):
             })
 
         return Response(serializer.errors, status=400)
-    
+
+
+class ResumeUploadView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    parser_classes = [
+        MultiPartParser,
+        FormParser
+    ]
+
+    def post(self, request):
+
+        # Only candidates/users can upload resumes
+        if request.user.role != "user":
+            return Response(
+                {
+                    "error": "Only candidates can upload resumes."
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        resume_file = request.FILES.get("resume")
+
+        # Check file exists
+        if not resume_file:
+
+            return Response(
+                {
+                    "error": "Please upload a resume."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # -----------------------------------------
+        # File Size Validation
+        # -----------------------------------------
+
+        if resume_file.size > 5 * 1024 * 1024:
+
+            return Response(
+                {
+                    "error": "Resume size must be less than 5MB."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # -----------------------------------------
+        # File Extension Validation
+        # -----------------------------------------
+
+        allowed_extensions = [
+            ".pdf",
+            ".docx",
+            ".txt"
+        ]
+
+        file_name = resume_file.name.lower()
+
+        if not any(
+            file_name.endswith(extension)
+            for extension in allowed_extensions
+        ):
+
+            return Response(
+                {
+                    "error": "Only PDF, DOCX and TXT files are allowed."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # -----------------------------------------
+        # Parse Resume
+        # -----------------------------------------
+
+        parsed_data = parse_resume(resume_file)
+
+        if not parsed_data["success"]:
+
+            return Response(
+                {
+                    "error": "Could not extract text from the resume."
+                },
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # -----------------------------------------
+        # Save Resume
+        # -----------------------------------------
+
+        user = request.user
+
+        user.resume = resume_file
+
+        # Limit stored text
+        user.resume_text = parsed_data["text"][:10000]
+
+        # Save parsed information
+        user.parsed_resume = {
+            "success": True,
+            "skills": parsed_data["skills"]
+        }
+
+        # Save skills as JSON array
+        user.skills = parsed_data["skills"]
+
+        user.save()
+
+        # -----------------------------------------
+        # Response
+        # -----------------------------------------
+
+        return Response(
+            {
+                "success": True,
+
+                "message": "Resume uploaded and parsed successfully.",
+
+                "skills": parsed_data["skills"],
+
+                "resume_text": parsed_data["text"][:10000],
+
+                "resume": user.resume.url if user.resume else None
+            },
+            status=status.HTTP_200_OK
+        )

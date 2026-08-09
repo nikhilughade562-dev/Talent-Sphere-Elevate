@@ -50,7 +50,20 @@ class User(AbstractUser):
 
     education = models.TextField(blank=True)
     skills = models.JSONField(default=list, blank=True)
+    resume = models.FileField(
+        upload_to="resumes/",
+        blank=True,
+        null=True
+    )
 
+    resume_text = models.TextField(
+        blank=True
+    )
+
+    parsed_resume = models.JSONField(
+        default=dict,
+        blank=True
+    )
     linkedin = models.URLField(blank=True)
     github = models.URLField(blank=True)
 

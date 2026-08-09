@@ -30,6 +30,19 @@ const CandidateContextProvider = (props) => {
   }
 };
 
+  const uploadResume=async (resumeFile)=>{
+    try {
+      const formData=new FormData();
+      formData.append("resume",resumeFile);
+      const response=await axiosInstance.post("/profile/resume/",formData);
+      console.log("response in context -> ",response)
+      return response.data;
+
+    } catch (error) {
+      console.log(error.response?.data);
+    }
+  }
+
 
   const getJobs = async () => {
     try {
@@ -42,7 +55,7 @@ const CandidateContextProvider = (props) => {
   
 
   const value = {
-    ctoken,setCtoken,jobs,setJobs,getJobs,profile, setProfile,getProfileData,updateProfile
+    ctoken,setCtoken,jobs,setJobs,getJobs,profile, setProfile,getProfileData,updateProfile,uploadResume
   };
 
      return (

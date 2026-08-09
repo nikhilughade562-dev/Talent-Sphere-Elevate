@@ -60,6 +60,9 @@ AUTHENTICATION_BACKENDS = [
     "accounts.authentication.EmailBackend",
 ]
 
+MEDIA_URL = "/media/"
+MEDIA_ROOT = BASE_DIR / "media"
+
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',

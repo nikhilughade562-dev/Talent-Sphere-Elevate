@@ -91,4 +91,7 @@ class ProfileSerializer(serializers.ModelSerializer):
             "is_superuser",
             "is_active",
             "date_joined",
+            "resume",
+            "resume_text",
+            "parsed_resume",
         )
