@@ -263,12 +263,24 @@ class ResumeUploadView(APIView):
         # Save parsed information
         user.parsed_resume = {
             "success": True,
-            "skills": parsed_data["skills"]
+            "skills": parsed_data["skills"],
+            "email": parsed_data.get("email"),
+            "phone": parsed_data.get("phone"),
+            "location": parsed_data.get("location"),
+            "years_of_experience": parsed_data.get("years_of_experience")
         }
 
         # Save skills as JSON array
         user.skills = parsed_data["skills"]
-
+        
+        # Populate additional fields if they were successfully extracted and not already set
+        if parsed_data.get("phone") and not user.phone:
+            user.phone = parsed_data["phone"]
+        if parsed_data.get("location") and not user.location:
+            user.location = parsed_data["location"]
+        if parsed_data.get("years_of_experience") is not None and not user.years_of_experience:
+            user.years_of_experience = parsed_data["years_of_experience"]
+            
         user.save()
 
         # -----------------------------------------
