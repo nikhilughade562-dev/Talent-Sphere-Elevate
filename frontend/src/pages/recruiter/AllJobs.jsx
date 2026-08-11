@@ -1,5 +1,6 @@
 import React ,{useEffect,useContext} from 'react'
 import { RecruiterContext } from '../../context/RecruiterContext'
+import { Link } from 'react-router-dom'
 
 const AllJobs = () => {
    const {rtoken,setRtoken,jobs, setJobs,getAllJobs}=useContext(RecruiterContext);
@@ -70,7 +71,9 @@ const AllJobs = () => {
                   </td>
 
                   <td className="px-5 py-4">
-                    {job.applications}
+                    <Link to={`/recruiter-jobs/${job.id}/candidates`} className="text-blue-600 hover:underline">
+                      View Candidates
+                    </Link>
                   </td>
 
                   <td className="px-5 py-4">

@@ -10,6 +10,8 @@ import {
   FaBuilding,
 } from "react-icons/fa";
 import { CandidateContext } from "../../context/CandidateContext";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const JobDetails = () => {
   const navigate = useNavigate();
@@ -44,8 +46,16 @@ const JobDetails = () => {
     );
   }
 
-  const applyHandler = () => {
-    alert("Applied for the job");
+  const applyHandler = async () => {
+    try {
+        const ctoken = localStorage.getItem('ctoken'); // Or get from Context if exposed directly
+        const res = await axios.post(`http://localhost:8000/api/jobs/${id}/apply/`, {}, {
+            headers: { Authorization: `Bearer ${ctoken}` }
+        });
+        toast.success(`Applied Successfully! Match Score: ${res.data.match_score}%`);
+    } catch (error) {
+        toast.error(error.response?.data?.error || "Failed to apply");
+    }
   };
 
   return (

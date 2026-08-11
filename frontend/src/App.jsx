@@ -11,6 +11,7 @@ import RecruiterProfile from './pages/recruiter/RecruiterProfile'
 import RecruiterDashboard from './pages/recruiter/RecruiterDashboard'
 import AllJobs from './pages/recruiter/AllJobs'
 import AddJob from './pages/recruiter/AddJob'
+import JobCandidates from './pages/recruiter/JobCandidates'
 import CandidateLogin from './pages/candidate/CandidateLogin'
 import CandidateProfile from './pages/candidate/CandidateProfile'
 import Jobs from './pages/candidate/Jobs'
@@ -100,6 +101,11 @@ const App = () => {
   <Route
     path="/recruiter-alljobs"
     element={<AllJobs />}
+  />
+
+  <Route
+    path="/recruiter-jobs/:id/candidates"
+    element={<JobCandidates />}
   />
 </Route>
 
