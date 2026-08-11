@@ -11,11 +11,12 @@ backend/media
 # Python
 *.pyc
 venv/
-.env
+backend/.env
 
-# Environment
-.env
 
 # Editor
 .vscode/
 .idea/
+
+
+

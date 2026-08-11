@@ -42,73 +42,93 @@ const CandidateLogin = () => {
 
 
   return (
-    <form onSubmit={onSubmitHandler} className="min-h-[80vh] flex items-center">
-      <div className="mt-40 flex flex-col gap-3 m-auto items-start p-8 min-w-[340px] sm:min-w-96 border rounded-xl text-zinc-600 text-sm shadow-lg">
-        <p className="text-2xl font-semibold">
-          {state === "Sign Up" ? "Create Account" : "Login"}
-        </p>
-        {state === "Sign Up" && (
-          <div className="w-full">
-            <p>Full Name</p>
+    <div className="min-h-[85vh] flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 border border-gray-100">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold text-gray-900">
+            {state === "Sign Up" ? "Candidate Signup" : "Candidate Login"}
+          </h2>
+          <p className="mt-2 text-sm text-gray-600">
+            {state === "Sign Up" 
+              ? "Create an account to land your dream job." 
+              : "Welcome back! Enter your details to access jobs."}
+          </p>
+        </div>
+
+        <form onSubmit={onSubmitHandler} className="space-y-5">
+          {state === "Sign Up" && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">Full Name</label>
+              <input
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition"
+                type="text"
+                placeholder="John Doe"
+                onChange={(e) => setName(e.target.value)}
+                value={name}
+                required
+              />
+            </div>
+          )}
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Email Address</label>
             <input
-              className="border border-zinc-300 rounded w-full p-2 mt-1"
-              type="text"
-              onChange={(e) => setName(e.target.value)}
-              value={name}
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition"
+              type="email"
+              placeholder="you@example.com"
+              onChange={(e) => setEmail(e.target.value)}
+              value={email}
               required
             />
           </div>
-        )}
 
-        <div className="w-full">
-          <p>Email</p>
-          <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
-            type="email"
-            onChange={(e) => setEmail(e.target.value)}
-            value={email}
-            required
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">Password</label>
+            <input
+              className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:ring-2 focus:ring-purple-600 focus:border-transparent outline-none transition"
+              type="password"
+              placeholder="••••••••"
+              onChange={(e) => setPassword(e.target.value)}
+              value={password}
+              required
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="w-full flex justify-center py-3 px-4 border border-transparent rounded-xl shadow-sm text-sm font-semibold text-white bg-purple-700 hover:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-600 transition duration-150"
+          >
+            {state === "Sign Up" ? "Create Account" : "Sign In"}
+          </button>
+        </form>
+
+        <div className="mt-6 text-center">
+          {state === "Sign Up" ? (
+            <p className="text-sm text-gray-600">
+              Already have an account?{" "}
+              <button
+                type="button"
+                onClick={() => setState("Login")}
+                className="font-medium text-purple-700 hover:text-purple-600 transition"
+              >
+                Log in
+              </button>
+            </p>
+          ) : (
+            <p className="text-sm text-gray-600">
+              Don't have an account?{" "}
+              <button
+                type="button"
+                onClick={() => setState("Sign Up")}
+                className="font-medium text-purple-700 hover:text-purple-600 transition"
+              >
+                Sign up
+              </button>
+            </p>
+          )}
         </div>
-        <div className="w-full">
-          <p>Password</p>
-          <input
-            className="border border-zinc-300 rounded w-full p-2 mt-1"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-            value={password}
-            required
-          />
-        </div>
-        <button
-          type="submit"
-          className="bg-purple-800 text-white w-full py-2 rounded-md text-base"
-        >
-          {state === "Sign Up" ? "Create Account" : "Login"}
-        </button>
-        {state === "Sign Up" ? (
-          <p>
-            Already have an account?{" "}
-            <span
-              onClick={() => setState("Login")}
-              className="text-blue-700 underline cursor-pointer"
-            >
-              Login here
-            </span>
-          </p>
-        ) : (
-          <p>
-            Create a new account?{" "}
-            <span
-              onClick={() => setState("Sign Up")}
-              className="text-blue-700 underline cursor-pointer"
-            >
-              click here
-            </span>
-          </p>
-        )}
       </div>
-    </form>
+    </div>
   )
 }
 

@@ -35,7 +35,7 @@ const AddJob = () => {
             location: "",
             description: "",
             requirements: "",
-            experience_level: "Mid",
+            experience_level: "mid",
             salary_min: "",
             salary_max: "",
             status: "active",
@@ -172,8 +172,9 @@ const AddJob = () => {
                 onChange={handleChange}
                 className="w-full border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-purple-600"
               >
-                <option value="Entry">Entry Level</option>
-                <option value="Mid">Mid Level</option>
+                <option value="fresher">Fresher</option>
+                <option value="junior">Junior</option>
+                <option value="mid">Mid Level</option>
                 <option value="senior">Senior Level</option>
               </select>
             </div>
@@ -191,7 +192,6 @@ const AddJob = () => {
               >
                 <option value="active">Active</option>
                 <option value="closed">Closed</option>
-                <option value="draft">Draft</option>
               </select>
             </div>
 

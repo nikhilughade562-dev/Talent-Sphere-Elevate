@@ -4,6 +4,9 @@ from .views import (
     AddJobView,
     RecruiterJobsView,
     AllJobsView,
+    ApplyToJobView,
+    JobCandidatesView,
+    UpdateApplicationStatusView
 )
 
 urlpatterns = [
@@ -13,5 +16,8 @@ urlpatterns = [
     path("recruiter/jobs/", AddJobView.as_view()),
 
     path("recruiter/jobs/list/", RecruiterJobsView.as_view()),
-
+    
+    path("<int:job_id>/apply/", ApplyToJobView.as_view()),
+    path("recruiter/jobs/<int:job_id>/candidates/", JobCandidatesView.as_view()),
+    path("recruiter/applications/<int:app_id>/status/", UpdateApplicationStatusView.as_view()),
 ]

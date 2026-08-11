@@ -64,6 +64,13 @@ class User(AbstractUser):
         default=dict,
         blank=True
     )
+    
+    phone = models.CharField(max_length=20, blank=True)
+    location = models.CharField(max_length=100, blank=True)
+    projects = models.JSONField(default=list, blank=True)
+    certifications = models.JSONField(default=list, blank=True)
+    years_of_experience = models.FloatField(null=True, blank=True)
+
     linkedin = models.URLField(blank=True)
     github = models.URLField(blank=True)
 
