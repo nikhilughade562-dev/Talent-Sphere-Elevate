@@ -6,7 +6,9 @@ from .views import (
     AllJobsView,
     ApplyToJobView,
     JobCandidatesView,
-    UpdateApplicationStatusView
+    UpdateApplicationStatusView,
+    AppliedJobsView
+
 )
 
 urlpatterns = [
@@ -20,4 +22,9 @@ urlpatterns = [
     path("<int:job_id>/apply/", ApplyToJobView.as_view()),
     path("recruiter/jobs/<int:job_id>/candidates/", JobCandidatesView.as_view()),
     path("recruiter/applications/<int:app_id>/status/", UpdateApplicationStatusView.as_view()),
+    path(
+    "applied/",
+    AppliedJobsView.as_view(),
+    name="applied-jobs"
+),
 ]

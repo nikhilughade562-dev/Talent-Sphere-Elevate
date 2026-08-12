@@ -37,12 +37,17 @@ def calculate_match(candidate, job):
     WEIGHT_SKILL = 0.60
     WEIGHT_EXP = 0.20
     WEIGHT_PROJECT = 0.20
-
+    from accounts.resume_parser import extract_skills,normalize_skill
     # 1. Skill Match
-    candidate_skills = set(str(s).lower() for s in candidate.skills) if candidate.skills else set()
-    
-    from accounts.resume_parser import extract_skills
-    job_required_skills = set(extract_skills(job.requirements + " " + job.description))
+    candidate_skills = {
+    normalize_skill(skill)
+    for skill in candidate.skills
+    }
+
+    job_required_skills = {
+    normalize_skill(skill)
+    for skill in job.requirements
+    }
     
     if not job_required_skills:
         skill_score = 1.0

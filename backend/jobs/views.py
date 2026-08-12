@@ -4,7 +4,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 from .models import Job, Application
-from .serializers import JobSerializer
+from .serializers import JobSerializer,ApplicationSerializer,AppliedJobSerializer
 from rest_framework import serializers
 
 class ApplicationSerializer(serializers.ModelSerializer):
@@ -98,7 +98,21 @@ class ApplyToJobView(APIView):
             missing_skills=match_data["missing_skills"]
         )
         
-        return Response({"message": "Successfully applied", "match_score": match_data["overall_score"]}, status=status.HTTP_201_CREATED)
+        return Response(
+            {
+                "message": "Successfully applied",
+                "application_id": application.id,
+
+                "match_score": match_data["overall_score"],
+                "skill_score": match_data["skill_score"],
+                "experience_score": match_data["experience_score"],
+                "project_score": match_data["project_score"],
+
+                "matched_skills": match_data["matched_skills"],
+                "missing_skills": match_data["missing_skills"],
+            },
+            status=status.HTTP_201_CREATED
+        )
 
 class JobCandidatesView(APIView):
     permission_classes = [IsAuthenticated]
@@ -134,4 +148,38 @@ class UpdateApplicationStatusView(APIView):
             application.save()
             return Response({"message": "Status updated."})
             
-        return Response({"error": "Invalid status."}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"error": "Invalid status."}, status=status.HTTP_400_BAD_REQUEST)
+
+class AppliedJobsView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if request.user.role != "user":
+            return Response(
+                {
+                    "error": "Only candidates can view applied jobs."
+                },
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        applications = (
+            Application.objects
+            .filter(candidate=request.user)
+            .select_related("job")
+            .order_by("-applied_at")
+        )
+
+        serializer = AppliedJobSerializer(
+            applications,
+            many=True
+        )
+
+        return Response(
+            {
+                "count": applications.count(),
+                "applications": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )

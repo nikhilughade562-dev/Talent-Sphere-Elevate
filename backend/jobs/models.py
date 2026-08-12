@@ -21,7 +21,7 @@ class Job(models.Model):
     location = models.CharField(max_length=200)
 
     description = models.TextField()
-    requirements = models.TextField()
+    requirements = models.JSONField(default=list, blank=True)
 
     experience_level = models.CharField(
         max_length=20,

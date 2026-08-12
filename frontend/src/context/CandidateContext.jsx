@@ -6,8 +6,8 @@ export const CandidateContext = createContext();
 const CandidateContextProvider = (props) => {
   const[ctoken,setCtoken]=useState(localStorage.getItem("ctoken") ? localStorage.getItem("ctoken") : "");
   const[jobs,setJobs]=useState([]);
-
   const [profile, setProfile] = useState({});
+  const[appliedJobs,setappliedJobs]=useState([]);
 
   const getProfileData = async () => {
     try {
@@ -52,10 +52,20 @@ const CandidateContextProvider = (props) => {
       console.log(error)
     }
   };
+
+  const appliedJobsList= async()=>{
+    try {
+      const response=await axiosInstance.get("jobs/applied/");
+      setappliedJobs(response.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
   
 
   const value = {
-    ctoken,setCtoken,jobs,setJobs,getJobs,profile, setProfile,getProfileData,updateProfile,uploadResume
+    ctoken,setCtoken,jobs,setJobs,getJobs,profile, setProfile,getProfileData,updateProfile,uploadResume,appliedJobsList,
+    appliedJobs,setappliedJobs
   };
 
      return (

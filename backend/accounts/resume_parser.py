@@ -91,19 +91,36 @@ SKILLS_DATABASE = [
 
 # Mapping to normalize skills
 SKILL_NORMALIZATION = {
-    "node.js": "Node.js",
-    "nodejs": "Node.js",
-    "react.js": "React",
-    "react": "React",
-    "mongo db": "MongoDB",
-    "mongodb": "MongoDB",
-    "express.js": "Express",
-    "express": "Express",
+    "react.js": "react",
+    "reactjs": "react",
+
+    "nodejs": "node.js",
+
+    "express.js": "express",
+    "expressjs": "express",
+
+    "restful api": "rest api",
+    "restful apis": "rest api",
+    "rest api": "rest api",
+    "rest apis": "rest api",
+
+    "html5": "html",
+    "css3": "css",
+
+    "oops": "oop",
+    "object oriented programming": "oop",
+    "object-oriented programming": "oop",
+
+    "dsa": "dsa",
+    "data structures and algorithms": "dsa"
 }
 
 # --------------------------------------------------
 # NLP EXTRACTION LOGIC
 # --------------------------------------------------
+def normalize_skill(skill):
+    skill = str(skill).lower().strip()
+    return SKILL_NORMALIZATION.get(skill, skill)
 
 def extract_skills(text):
     skills = []
