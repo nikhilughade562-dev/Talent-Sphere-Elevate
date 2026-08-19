@@ -5,6 +5,7 @@ import {
   FaClipboardCheck,
   FaUserCircle,
   FaSignOutAlt,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 import { CandidateContext } from "../../context/CandidateContext";
@@ -64,6 +65,16 @@ const CandidateNavbar = () => {
             <FaClipboardCheck />
             <span className="hidden md:block">
               Applied
+            </span>
+          </NavLink>
+
+          <NavLink
+            to="/candidate-interviews"
+            className={navItemStyle}
+          >
+            <FaCalendarAlt />
+            <span className="hidden md:block">
+              Interviews
             </span>
           </NavLink>
 

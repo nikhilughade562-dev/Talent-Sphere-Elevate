@@ -4,12 +4,14 @@ import { RecruiterContext } from '../../context/RecruiterContext';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { FaArrowLeft, FaCheckCircle, FaTimesCircle, FaUserCircle } from 'react-icons/fa';
+import InterviewModal from '../../components/recruiter/InterviewModal';
 
 const JobCandidates = () => {
     const { id } = useParams();
     const { rtoken } = useContext(RecruiterContext);
     const [candidates, setCandidates] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [selectedApp, setSelectedApp] = useState(null);
 
     const fetchCandidates = async () => {
         try {
@@ -106,7 +108,7 @@ const JobCandidates = () => {
                                                 <button onClick={() => updateStatus(app.id, 'shortlisted')} className="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm transition">Shortlist</button>
                                             )}
                                             {app.status === 'shortlisted' && (
-                                                <button onClick={() => updateStatus(app.id, 'interview')} className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">Interview</button>
+                                                <button onClick={() => setSelectedApp(app)} className="bg-purple-600 hover:bg-purple-700 text-white px-3 py-1 rounded text-sm transition">Interview</button>
                                             )}
                                             {app.status !== 'rejected' && (
                                                 <button onClick={() => updateStatus(app.id, 'rejected')} className="bg-red-600 hover:bg-red-700 text-white px-3 py-1 rounded text-sm transition">Reject</button>
@@ -119,6 +121,13 @@ const JobCandidates = () => {
                     </table>
                 </div>
             </div>
+            {selectedApp && (
+                <InterviewModal
+                    application={selectedApp}
+                    onClose={() => setSelectedApp(null)}
+                    onSuccess={fetchCandidates}
+                />
+            )}
         </div>
     );
 };
