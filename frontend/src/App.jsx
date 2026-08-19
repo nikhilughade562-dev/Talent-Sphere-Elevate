@@ -19,6 +19,8 @@ import AppliedJobs from './pages/candidate/AppliedJobs'
 import RecruiterLayout from "./components/recruiter/RecruiterLayout";
 import CandidateLayout from "./components/candidate/CandidateLayout";
 import JobDetails from "./pages/candidate/JobDetails";
+import RecruiterInterviews from "./pages/recruiter/RecruiterInterviews";
+import CandidateInterviews from "./pages/candidate/CandidateInterviews";
 
 const App = () => {
   const {rtoken}=useContext(RecruiterContext);
@@ -107,6 +109,11 @@ const App = () => {
     path="/recruiter-jobs/:id/candidates"
     element={<JobCandidates />}
   />
+
+  <Route
+    path="/recruiter-interviews"
+    element={<RecruiterInterviews />}
+  />
 </Route>
 
         {/* ===================== CANDIDATE ROUTES ===================== */}
@@ -138,6 +145,11 @@ const App = () => {
   <Route
     path="/candidate-profile"
     element={<CandidateProfile />}
+  />
+
+  <Route
+    path="/candidate-interviews"
+    element={<CandidateInterviews />}
   />
 </Route>
 

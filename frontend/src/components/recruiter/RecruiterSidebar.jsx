@@ -4,6 +4,7 @@ import {
   FaChartPie,
   FaPlusCircle,
   FaBriefcase,
+  FaCalendarAlt,
 } from "react-icons/fa";
 
 const RecruiterSidebar = () => {
@@ -22,6 +23,11 @@ const RecruiterSidebar = () => {
       name: "Posted Jobs",
       path: "/recruiter-alljobs",
       icon: <FaBriefcase />,
+    },
+    {
+      name: "Interviews",
+      path: "/recruiter-interviews",
+      icon: <FaCalendarAlt />,
     },
   ];
 
