@@ -18,7 +18,7 @@ const AppliedJobs = () => {
     appliedJobsList();
   }, []);
 
-  const applications = appliedJobs?.applications || [];
+const applications = appliedJobs ? appliedJobs : [];
 
   const formatDate = (date) => {
     if (!date) return "N/A";

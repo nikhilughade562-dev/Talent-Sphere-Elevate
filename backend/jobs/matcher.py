@@ -17,7 +17,6 @@ def parse_experience(experience_str):
     if "fresher" in exp_str or exp_str == "0":
         return 0.0
     
-    # Try to find digits
     nums = re.findall(r'\d+', exp_str)
     if not nums:
         return 0.0
@@ -25,7 +24,7 @@ def parse_experience(experience_str):
     if len(nums) == 1:
         return float(nums[0])
     
-    # E.g., '1-3' -> average (1 + 3) / 2 = 2.0
+    
     return (float(nums[0]) + float(nums[1])) / 2.0
 
 def calculate_match(candidate, job):

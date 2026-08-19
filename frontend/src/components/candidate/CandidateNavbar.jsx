@@ -49,6 +49,16 @@ const CandidateNavbar = () => {
         <div className="flex items-center gap-2">
 
           <NavLink
+            to="/candidate-dashboard"
+            className={navItemStyle}
+          >
+            <FaBriefcase />
+            <span className="hidden md:block">
+              Dashboard
+            </span>
+          </NavLink>
+
+          <NavLink
             to="/candidate-jobs"
             className={navItemStyle}
           >

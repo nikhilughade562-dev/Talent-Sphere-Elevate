@@ -7,6 +7,8 @@ const RecruiterContextProvider = (props) => {
   const[rtoken,setRtoken]=useState(localStorage.getItem("rtoken") ? localStorage.getItem("rtoken") : "");
   const [jobs, setJobs] = useState([]);
   const [profile, setProfile] = useState({});
+  const [candidates, setCandidates] = useState([]);
+  const [applicationStats, setApplicationStats] = useState({total_applications: 0,selected_applications: 0,});
 
   const getProfileData = async () => {
     try {
@@ -35,8 +37,17 @@ const RecruiterContextProvider = (props) => {
     setJobs(response.data)
   };
 
+  const getApplicationStats = async () => {
+  try {
+    const response =await axiosInstance.get("/jobs/recruiter/application-stats/")
+    setApplicationStats(response.data);
+  } catch (error) {
+    console.error("Error fetching application stats:", error);
+  }
+};
+
   const value = {
-    rtoken,setRtoken,profile,setProfile,getProfileData,jobs, setJobs,getAllJobs,updateProfile
+    rtoken,setRtoken,profile,setProfile,getProfileData,jobs, setJobs,getAllJobs,updateProfile,candidates, setCandidates,applicationStats,  getApplicationStats,
   };
 
      return (

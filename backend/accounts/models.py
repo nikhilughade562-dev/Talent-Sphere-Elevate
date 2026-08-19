@@ -59,7 +59,7 @@ class User(AbstractUser):
     resume_text = models.TextField(
         blank=True
     )
-
+    
     parsed_resume = models.JSONField(
         default=dict,
         blank=True

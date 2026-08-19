@@ -197,10 +197,6 @@ class ResumeUploadView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # -----------------------------------------
-        # File Size Validation
-        # -----------------------------------------
-
         if resume_file.size > 5 * 1024 * 1024:
 
             return Response(
@@ -210,9 +206,6 @@ class ResumeUploadView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # -----------------------------------------
-        # File Extension Validation
-        # -----------------------------------------
 
         allowed_extensions = [
             ".pdf",
@@ -234,9 +227,6 @@ class ResumeUploadView(APIView):
                 status=status.HTTP_400_BAD_REQUEST
             )
 
-        # -----------------------------------------
-        # Parse Resume
-        # -----------------------------------------
 
         parsed_data = parse_resume(resume_file)
 
@@ -248,10 +238,6 @@ class ResumeUploadView(APIView):
                 },
                 status=status.HTTP_400_BAD_REQUEST
             )
-
-        # -----------------------------------------
-        # Save Resume
-        # -----------------------------------------
 
         user = request.user
 
@@ -273,7 +259,6 @@ class ResumeUploadView(APIView):
         # Save skills as JSON array
         user.skills = parsed_data["skills"]
         
-        # Populate additional fields if they were successfully extracted and not already set
         if parsed_data.get("phone") and not user.phone:
             user.phone = parsed_data["phone"]
         if parsed_data.get("location") and not user.location:
@@ -282,10 +267,6 @@ class ResumeUploadView(APIView):
             user.years_of_experience = parsed_data["years_of_experience"]
             
         user.save()
-
-        # -----------------------------------------
-        # Response
-        # -----------------------------------------
 
         return Response(
             {

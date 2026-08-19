@@ -10,10 +10,6 @@ except Exception:
     nlp = None
     print("Warning: spacy en_core_web_sm model not loaded.")
 
-# --------------------------------------------------
-# TEXT EXTRACTION
-# --------------------------------------------------
-
 def extract_text_from_pdf(file):
     text = ""
     try:
@@ -54,9 +50,6 @@ def extract_text_from_file(file):
         print("Resume extraction error:", e)
         return ""
 
-# --------------------------------------------------
-# SKILLS DATABASE
-# --------------------------------------------------
 
 SKILLS_DATABASE = [
     # Programming Languages
@@ -115,9 +108,7 @@ SKILL_NORMALIZATION = {
     "data structures and algorithms": "dsa"
 }
 
-# --------------------------------------------------
-# NLP EXTRACTION LOGIC
-# --------------------------------------------------
+
 def normalize_skill(skill):
     skill = str(skill).lower().strip()
     return SKILL_NORMALIZATION.get(skill, skill)
@@ -177,8 +168,6 @@ def parse_resume(file):
     location = extract_location(text)
     yoe = extract_experience_years(text)
 
-    # Simplified heuristic for education, certifications, projects
-    # In a full system, we would parse sections based on headings
     
     return {
         "success": True,

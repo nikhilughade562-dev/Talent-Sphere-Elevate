@@ -3,9 +3,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
+
 from .models import Job, Application
 from .serializers import JobSerializer,ApplicationSerializer,AppliedJobSerializer
 from rest_framework import serializers
+from django.db.models import Count
 
 class ApplicationSerializer(serializers.ModelSerializer):
     candidate_name = serializers.CharField(source='candidate.name', read_only=True)
@@ -180,6 +182,36 @@ class AppliedJobsView(APIView):
             {
                 "count": applications.count(),
                 "applications": serializer.data
+            },
+            status=status.HTTP_200_OK
+        )
+
+
+
+
+class RecruiterApplicationStatsView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != "recruiter":
+            return Response(
+                {"error": "Only recruiters can view application stats."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        total_applications = Application.objects.filter(
+            job__recruiter=request.user
+        ).count()
+
+        selected_applications = Application.objects.filter(
+            job__recruiter=request.user,
+            status="shortlisted"
+        ).count()
+
+        return Response(
+            {
+                "total_applications": total_applications,
+                "selected_applications": selected_applications
             },
             status=status.HTTP_200_OK
         )

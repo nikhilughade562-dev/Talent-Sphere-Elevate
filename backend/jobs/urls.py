@@ -7,7 +7,8 @@ from .views import (
     ApplyToJobView,
     JobCandidatesView,
     UpdateApplicationStatusView,
-    AppliedJobsView
+    AppliedJobsView,
+    RecruiterApplicationStatsView
 
 )
 
@@ -26,5 +27,10 @@ urlpatterns = [
     "applied/",
     AppliedJobsView.as_view(),
     name="applied-jobs"
+),
+path(
+    "recruiter/application-stats/",
+    RecruiterApplicationStatsView.as_view(),
+    name="recruiter-application-stats"
 ),
 ]

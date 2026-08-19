@@ -8,8 +8,7 @@ import InterviewModal from '../../components/recruiter/InterviewModal';
 
 const JobCandidates = () => {
     const { id } = useParams();
-    const { rtoken } = useContext(RecruiterContext);
-    const [candidates, setCandidates] = useState([]);
+    const { rtoken,candidates, setCandidates } = useContext(RecruiterContext);
     const [loading, setLoading] = useState(true);
     const [selectedApp, setSelectedApp] = useState(null);
 

@@ -23,7 +23,7 @@ const CandidateLogin = () => {
         localStorage.setItem("refresh", res.data.access);
         localStorage.setItem("ctoken",res.data.access);
         setCtoken(res.access)
-        navigate('/candidate-jobs')
+        navigate('/candidate-dashboard')
 
       }
       //login existing user
@@ -33,7 +33,7 @@ const CandidateLogin = () => {
           localStorage.setItem("refresh", res.data.access);
           localStorage.setItem("ctoken",res.data.access);
           setCtoken(res.access)
-          navigate('/candidate-jobs')
+          navigate('/candidate-dashboard')
       }
     } catch (error) {
        console.log(error)

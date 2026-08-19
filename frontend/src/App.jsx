@@ -21,6 +21,7 @@ import CandidateLayout from "./components/candidate/CandidateLayout";
 import JobDetails from "./pages/candidate/JobDetails";
 import RecruiterInterviews from "./pages/recruiter/RecruiterInterviews";
 import CandidateInterviews from "./pages/candidate/CandidateInterviews";
+import CandidateDashboard from './pages/candidate/CandidateDashboard';
 
 const App = () => {
   const {rtoken}=useContext(RecruiterContext);
@@ -131,6 +132,11 @@ const App = () => {
     path="/candidate-jobs"
     element={<Jobs />}
   />
+
+  <Route
+  path="/candidate-dashboard"
+  element={<CandidateDashboard />}
+/>
 
   <Route
     path="/candidate-job/:id"

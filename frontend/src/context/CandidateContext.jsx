@@ -56,7 +56,8 @@ const CandidateContextProvider = (props) => {
   const appliedJobsList= async()=>{
     try {
       const response=await axiosInstance.get("jobs/applied/");
-      setappliedJobs(response.data);
+      setappliedJobs(response.data.applications);
+      console.log(response.data.applications)
     } catch (error) {
       console.log(error)
     }
@@ -65,7 +66,7 @@ const CandidateContextProvider = (props) => {
 
   const value = {
     ctoken,setCtoken,jobs,setJobs,getJobs,profile, setProfile,getProfileData,updateProfile,uploadResume,appliedJobsList,
-    appliedJobs,setappliedJobs
+    appliedJobs,setappliedJobs,appliedJobsList
   };
 
      return (
