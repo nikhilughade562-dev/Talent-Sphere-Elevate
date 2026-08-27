@@ -6,6 +6,7 @@ import {
   FaUserCircle,
   FaSignOutAlt,
   FaCalendarAlt,
+  FaRoute
 } from "react-icons/fa";
 
 import { CandidateContext } from "../../context/CandidateContext";
@@ -85,6 +86,16 @@ const CandidateNavbar = () => {
             <FaCalendarAlt />
             <span className="hidden md:block">
               Interviews
+            </span>
+          </NavLink>
+
+          <NavLink
+            to="/candidate-learning-path"
+            className={navItemStyle}
+          >
+            <FaRoute />
+            <span className="hidden md:block">
+              Learning Path
             </span>
           </NavLink>
 

@@ -22,6 +22,7 @@ import JobDetails from "./pages/candidate/JobDetails";
 import RecruiterInterviews from "./pages/recruiter/RecruiterInterviews";
 import CandidateInterviews from "./pages/candidate/CandidateInterviews";
 import CandidateDashboard from './pages/candidate/CandidateDashboard';
+import LearningPath from "./pages/candidate/LearningPath";
 
 const App = () => {
   const {rtoken}=useContext(RecruiterContext);
@@ -157,6 +158,12 @@ const App = () => {
     path="/candidate-interviews"
     element={<CandidateInterviews />}
   />
+
+  <Route
+  path="/candidate-learning-path"
+  element={<LearningPath />}
+/>
+
 </Route>
 
         {/* ===================== 404 ===================== */}

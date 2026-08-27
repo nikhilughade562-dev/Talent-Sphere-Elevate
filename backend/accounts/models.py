@@ -49,6 +49,14 @@ class User(AbstractUser):
     )
 
     education = models.TextField(blank=True)
+
+    target_role = models.CharField(
+        max_length=100,
+        blank=True
+    )
+    career_goal = models.TextField(
+        blank=True
+    )
     skills = models.JSONField(default=list, blank=True)
     resume = models.FileField(
         upload_to="resumes/",
@@ -88,7 +96,38 @@ class User(AbstractUser):
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["name"]
 
-
-
     def __str__(self):
         return f"{self.name} ({self.role})"
+
+class LearningPath(models.Model):
+
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+        related_name="learning_path"
+    )
+
+    target_role = models.CharField(
+        max_length=100
+    )
+
+    career_goal = models.TextField()
+
+    roadmap = models.JSONField(
+        default=list
+    )
+
+    recommendation = models.TextField(
+        blank=True
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True
+    )
+
+    updated_at = models.DateTimeField(
+        auto_now=True
+    )
+
+    def __str__(self):
+        return f"{self.user.name} - {self.target_role}"

@@ -7,6 +7,7 @@ from .views import (
     RecruiterLoginView,
     ProfileView,
     ResumeUploadView,
+    LearningPathView
 )
 
 urlpatterns = [
@@ -21,10 +22,9 @@ urlpatterns = [
 
     path("profile/", ProfileView.as_view()),
 
-    path(
-    "profile/resume/",
-    ResumeUploadView.as_view(),
-    name="resume-upload"
-),
+    path("profile/resume/",ResumeUploadView.as_view(),name="resume-upload"),
+
+    path("user/learning-path/",LearningPathView.as_view(),),
+
 
 ]

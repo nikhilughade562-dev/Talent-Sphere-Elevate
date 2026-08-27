@@ -7,11 +7,15 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.parsers import MultiPartParser, FormParser
 from .resume_parser import parse_resume
+from .models import LearningPath
+from .llm_service import generate_learning_path
 
 from .serializers import (
     UserRegisterSerializer,
     RecruiterRegisterSerializer,
     ProfileSerializer,
+    LearningPathSerializer,
+    LearningPathGenerateSerializer,
 )
 
 User = get_user_model()
@@ -282,3 +286,81 @@ class ResumeUploadView(APIView):
             },
             status=status.HTTP_200_OK
         )
+
+class LearningPathView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        try:
+            learning_path = LearningPath.objects.get(
+                user=request.user
+            )
+
+        except LearningPath.DoesNotExist:
+            return Response({
+                "exists": False
+            })
+
+        serializer = LearningPathSerializer(
+            learning_path
+        )
+
+        return Response({
+            "exists": True,
+            "learning_path": serializer.data
+        })
+
+    def post(self, request):
+        if request.user.role != "user":
+            return Response(
+                {"error": "Only candidates can access learning paths."},
+                status=status.HTTP_403_FORBIDDEN
+            )
+
+        serializer = LearningPathGenerateSerializer(
+            data=request.data
+        )
+
+        if not serializer.is_valid():
+            return Response(
+                serializer.errors,
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        target_role = serializer.validated_data["target_role"]
+        career_goal = serializer.validated_data["career_goal"]
+
+        user = request.user
+
+        result = generate_learning_path(
+            skills=user.skills,
+            experience=user.experience,
+            education=user.education,
+            target_role=target_role,
+            career_goal=career_goal
+        )
+
+        learning_path, created = LearningPath.objects.update_or_create(
+            user=user,
+            defaults={
+                "target_role": target_role,
+                "career_goal": career_goal,
+                "roadmap": result["roadmap"],
+                "recommendation": result["recommendation"],
+            }
+        )
+
+        response_serializer = LearningPathSerializer(
+            learning_path
+        )
+
+        return Response({
+            "message": (
+                "Learning path generated successfully."
+                if created
+                else "Learning path updated successfully."
+            ),
+            "learning_path": response_serializer.data
+        })

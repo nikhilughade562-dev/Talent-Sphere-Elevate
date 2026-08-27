@@ -24,49 +24,7 @@ const RecruiterDashboard = () => {
   const activeJobs = jobs.filter((job) => job.status === "active").length;
 
   const totalApplications = applicationStats.total_applications;
-const totalSelected = applicationStats.selected_applications;
-
-  const monthlyJobPostings = useMemo(() => {
-    const months = [
-      "Jan",
-      "Feb",
-      "Mar",
-      "Apr",
-      "May",
-      "Jun",
-      "Jul",
-      "Aug",
-      "Sep",
-      "Oct",
-      "Nov",
-      "Dec",
-    ];
-
-    const monthMap = {};
-
-    months.forEach((month) => {
-      monthMap[month] = 0;
-    });
-
-    jobs.forEach((job) => {
-      if (!job.created_at) {
-        return;
-      }
-
-      const date = new Date(job.created_at);
-
-      const month = date.toLocaleString("en-US", {
-        month: "short",
-      });
-
-      monthMap[month] += 1;
-    });
-
-    return months.map((month) => ({
-      month,
-      jobs: monthMap[month],
-    }));
-  }, [jobs]);
+  const totalSelected = applicationStats.selected_applications;
 
   return (
     <div className="space-y-8">
@@ -110,7 +68,7 @@ const totalSelected = applicationStats.selected_applications;
 
       {/* Job Posting Graph */}
 
-      <JobPostingChart data={monthlyJobPostings} />
+      <JobPostingChart jobs={jobs} />
 
       {/* Recent Jobs */}
 

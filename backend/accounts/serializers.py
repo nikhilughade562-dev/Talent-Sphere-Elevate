@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-
+from .models import LearningPath
 User = get_user_model()
 
 
@@ -95,3 +95,30 @@ class ProfileSerializer(serializers.ModelSerializer):
             "resume_text",
             "parsed_resume",
         )
+
+class LearningPathSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = LearningPath
+        fields = [
+            "target_role",
+            "career_goal",
+            "roadmap",
+            "recommendation",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = [
+            "roadmap",
+            "recommendation",
+            "created_at",
+            "updated_at",
+        ]
+
+class LearningPathGenerateSerializer(serializers.Serializer):
+
+    target_role = serializers.CharField(
+        max_length=100
+    )
+
+    career_goal = serializers.CharField()
