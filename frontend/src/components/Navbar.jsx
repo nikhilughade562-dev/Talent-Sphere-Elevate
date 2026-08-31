@@ -17,8 +17,8 @@ const Navbar = () => {
   return (
     <nav className={`fixed z-50 w-full transition-all duration-300 ${scrolled ? 'bg-white/90 backdrop-blur-md shadow-sm py-3' : 'bg-transparent py-5'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-        
-        <div 
+
+        <div
           className="flex items-center gap-2 cursor-pointer"
           onClick={() => navigate("/")}
         >
@@ -31,21 +31,21 @@ const Navbar = () => {
         </div>
 
         <div className="flex items-center gap-3 sm:gap-4">
-          <button 
-            onClick={() => navigate("/candidate-login")} 
+          <button
+            onClick={() => navigate("/candidate-login")}
             className="flex items-center gap-2 text-sm font-semibold text-gray-600 hover:text-purple-700 transition px-2 py-2"
           >
             <FaFileAlt className="hidden sm:block" /> Candidate
           </button>
-          
-          <button 
-            onClick={() => navigate("/recruiter-login")} 
+
+          <button
+            onClick={() => navigate("/recruiter-login")}
             className="flex items-center gap-2 text-sm font-semibold bg-purple-700 hover:bg-purple-800 text-white px-4 py-2 rounded-lg shadow-sm transition"
           >
             <FaUserTie className="hidden sm:block" /> Recruiter
           </button>
         </div>
-        
+
       </div>
     </nav>
   );

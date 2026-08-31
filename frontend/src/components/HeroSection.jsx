@@ -7,11 +7,11 @@ const HeroSection = () => {
 
   return (
     <div className="bg-white min-h-screen">
-      
+
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 lg:pt-48 lg:pb-32 overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-purple-50 to-white -z-10"></div>
-        
+
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h1 className="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight mb-6">
             Intelligent ATS & <br className="hidden md:block" />
@@ -19,19 +19,19 @@ const HeroSection = () => {
               AI Resume Screening
             </span>
           </h1>
-          
+
           <p className="mt-6 max-w-2xl mx-auto text-xl text-gray-600 leading-relaxed">
             Talent Sphere Elevate streamlines hiring. We use advanced Natural Language Processing to extract skills from resumes and match them to ideal job opportunities instantly.
           </p>
 
           <div className="mt-10 flex flex-col sm:flex-row justify-center gap-4">
-            <button 
+            <button
               onClick={() => navigate('/candidate-login')}
               className="px-8 py-4 bg-purple-700 hover:bg-purple-800 text-white font-semibold rounded-xl shadow-lg hover:shadow-xl transition duration-300 flex items-center justify-center gap-2"
             >
               <FaFileAlt /> I'm a Candidate
             </button>
-            <button 
+            <button
               onClick={() => navigate('/recruiter-login')}
               className="px-8 py-4 bg-white border-2 border-purple-200 text-purple-700 hover:border-purple-700 font-semibold rounded-xl shadow-sm hover:shadow-md transition duration-300 flex items-center justify-center gap-2"
             >
@@ -66,12 +66,12 @@ const HeroSection = () => {
                 ))}
               </ul>
             </div>
-            
+
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-purple-400 to-indigo-500 rounded-2xl transform rotate-3 scale-105 opacity-20"></div>
               <div className="bg-white rounded-2xl shadow-xl p-8 relative border border-gray-100">
                 <h3 className="text-xl font-bold text-gray-900 mb-4">Sample Match Calculation</h3>
-                
+
                 <div className="space-y-4">
                   <div className="flex justify-between items-center mb-1">
                     <span className="text-sm font-medium text-gray-700">Overall Job Fit</span>
@@ -80,7 +80,7 @@ const HeroSection = () => {
                   <div className="w-full bg-gray-200 rounded-full h-2.5">
                     <div className="bg-green-500 h-2.5 rounded-full" style={{ width: '87%' }}></div>
                   </div>
-                  
+
                   <div className="mt-6 pt-4 border-t border-gray-100">
                     <p className="text-sm font-semibold text-gray-700 mb-2">Matched Skills (90%)</p>
                     <div className="flex gap-2 flex-wrap">
@@ -89,7 +89,7 @@ const HeroSection = () => {
                       <span className="px-2 py-1 bg-purple-100 text-purple-700 text-xs rounded-md">MongoDB</span>
                     </div>
                   </div>
-                  
+
                   <div className="mt-4">
                     <p className="text-sm font-semibold text-gray-700 mb-2">Missing Skills</p>
                     <div className="flex gap-2 flex-wrap">
