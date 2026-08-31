@@ -10,3 +10,6 @@ PyPDF2
 python-docx
 pdfplumber
 spacy
+python-dotenv
+google-genai
+argon2-cffi

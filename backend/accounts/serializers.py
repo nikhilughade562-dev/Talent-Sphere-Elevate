@@ -75,10 +75,33 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        exclude = [
-            "password",
-            "groups",
-            "user_permissions",
+        fields = [
+            "id",
+            "name",
+            "email",
+            "role",
+            "gender",
+            "experience",
+            "education",
+            "target_role",
+            "career_goal",
+            "skills",
+            "resume",
+            "resume_text",
+            "parsed_resume",
+            "phone",
+            "location",
+            "projects",
+            "certifications",
+            "years_of_experience",
+            "linkedin",
+            "github",
+            "about",
+            "company_name",
+            "company_website",
+            "company_description",
+            "created_at",
+            "updated_at",
         ]
         read_only_fields = (
             "id",
