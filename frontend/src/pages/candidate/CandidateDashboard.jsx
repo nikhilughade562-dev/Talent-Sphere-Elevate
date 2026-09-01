@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo } from "react";
 import {
   FaBriefcase,
   FaUserCheck,
@@ -9,15 +9,21 @@ import { CandidateContext } from "../../context/CandidateContext";
 
 import DashboardCard from "../../components/candidate/DashboardCard";
 import ApplicationChart from "../../components/candidate/ApplicationChart";
+import RecommendedJobs from "../../components/candidate/RecommendedJobs";
 
 const CandidateDashboard = () => {
   const {
     appliedJobs,
-   appliedJobsList
+    appliedJobsList,
+    recommendations,
+    recommendationsLoading,
+    recommendationsError,
+    getRecommendations
   } = useContext(CandidateContext);
 
   useEffect(() => {
     appliedJobsList();
+    getRecommendations();
   }, []);
 
 
@@ -128,6 +134,13 @@ const CandidateDashboard = () => {
 
       <ApplicationChart
         data={monthlyApplications}
+      />
+
+      <RecommendedJobs
+        recommendations={recommendations}
+        loading={recommendationsLoading}
+        error={recommendationsError}
+        onRetry={getRecommendations}
       />
 
     </div>

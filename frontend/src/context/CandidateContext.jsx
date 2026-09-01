@@ -8,6 +8,9 @@ const CandidateContextProvider = (props) => {
   const[jobs,setJobs]=useState([]);
   const [profile, setProfile] = useState({});
   const[appliedJobs,setappliedJobs]=useState([]);
+  const [recommendations, setRecommendations] = useState([]);
+  const [recommendationsLoading, setRecommendationsLoading] = useState(false);
+  const [recommendationsError, setRecommendationsError] = useState("");
 
   const getProfileData = async () => {
     try {
@@ -44,6 +47,24 @@ const CandidateContextProvider = (props) => {
   }
 
 
+  const getRecommendations = async () => {
+    setRecommendationsLoading(true);
+    setRecommendationsError("");
+
+    try {
+      const response = await axiosInstance.get("/jobs/recommended/?limit=6");
+      setRecommendations(response.data.results || []);
+    } catch (error) {
+      console.log(error.response?.data || error);
+      setRecommendations([]);
+      setRecommendationsError(
+        error.response?.data?.error || "Unable to load job recommendations."
+      );
+    } finally {
+      setRecommendationsLoading(false);
+    }
+  };
+
   const getJobs = async () => {
     try {
       const response = await axiosInstance.get("/jobs/");
@@ -66,7 +87,8 @@ const CandidateContextProvider = (props) => {
 
   const value = {
     ctoken,setCtoken,jobs,setJobs,getJobs,profile, setProfile,getProfileData,updateProfile,uploadResume,appliedJobsList,
-    appliedJobs,setappliedJobs,appliedJobsList
+    appliedJobs,setappliedJobs,appliedJobsList,
+    recommendations, recommendationsLoading, recommendationsError, getRecommendations
   };
 
      return (
