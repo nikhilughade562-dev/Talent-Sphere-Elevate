@@ -9,23 +9,16 @@ import { CandidateContext } from "../../context/CandidateContext";
 
 import DashboardCard from "../../components/candidate/DashboardCard";
 import ApplicationChart from "../../components/candidate/ApplicationChart";
-import RecommendedJobs from "../../components/candidate/RecommendedJobs";
 
 const CandidateDashboard = () => {
   const {
     appliedJobs,
-    appliedJobsList,
-    recommendations,
-    recommendationsLoading,
-    recommendationsError,
-    getRecommendations
+    appliedJobsList
   } = useContext(CandidateContext);
 
   useEffect(() => {
     appliedJobsList();
-    getRecommendations();
   }, []);
-
 
   const totalApplied = appliedJobs.length;
 
@@ -34,57 +27,52 @@ const CandidateDashboard = () => {
       application.status?.toLowerCase() === "shortlisted"
   ).length;
 
-
   const interview = appliedJobs.filter(
     (application) =>
       application.status?.toLowerCase() === "interview"
   ).length;
 
-
   const monthlyApplications = useMemo(() => {
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
 
-  const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+    const monthMap = {};
 
-  const monthMap = {};
-
-  months.forEach((month) => {
-    monthMap[month] = 0;
-  });
-
-  appliedJobs.forEach((application) => {
-
-    if (!application.applied_at) {
-      return;
-    }
-
-    const date = new Date(application.applied_at);
-
-    const month = date.toLocaleString("en-US", {
-      month: "short",
+    months.forEach((month) => {
+      monthMap[month] = 0;
     });
 
-    monthMap[month] += 1;
-  });
+    appliedJobs.forEach((application) => {
+      if (!application.applied_at) {
+        return;
+      }
 
-  return months.map((month) => ({
-    month,
-    applications: monthMap[month],
-  }));
+      const date = new Date(application.applied_at);
 
-}, [appliedJobs]);
+      const month = date.toLocaleString("en-US", {
+        month: "short",
+      });
+
+      monthMap[month] += 1;
+    });
+
+    return months.map((month) => ({
+      month,
+      applications: monthMap[month],
+    }));
+  }, [appliedJobs]);
 
   return (
     <div className="max-w-7xl mx-auto py-8 px-4">
@@ -134,13 +122,6 @@ const CandidateDashboard = () => {
 
       <ApplicationChart
         data={monthlyApplications}
-      />
-
-      <RecommendedJobs
-        recommendations={recommendations}
-        loading={recommendationsLoading}
-        error={recommendationsError}
-        onRetry={getRecommendations}
       />
 
     </div>
