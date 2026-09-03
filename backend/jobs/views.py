@@ -9,6 +9,8 @@ from .serializers import JobSerializer,ApplicationSerializer,AppliedJobSerialize
 from rest_framework import serializers
 from django.db.models import Count
 
+from .matcher import calculate_match
+
 class ApplicationSerializer(serializers.ModelSerializer):
     candidate_name = serializers.CharField(source='candidate.name', read_only=True)
     candidate_email = serializers.CharField(source='candidate.email', read_only=True)
@@ -18,6 +20,92 @@ class ApplicationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Application
         fields = "__all__"
+
+class RecommendedJobsView(APIView):
+    """Return the best active jobs for the logged-in candidate.
+
+    The recommendation engine reuses ``calculate_match`` so the score shown
+    here is consistent with the score calculated when the candidate applies.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        if request.user.role != "user":
+            return Response(
+                {"error": "Only candidates can view job recommendations."},
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        try:
+            limit = int(request.query_params.get("limit", 5))
+        except (TypeError, ValueError):
+            limit = 5
+
+        # Keep the endpoint predictable and prevent an unnecessarily large query.
+        limit = max(1, min(limit, 20))
+
+        applied_job_ids = Application.objects.filter(
+            candidate=request.user
+        ).values_list("job_id", flat=True)
+
+        active_jobs = (
+            Job.objects
+            .filter(status="active")
+            .exclude(id__in=applied_job_ids)
+        )
+
+        recommendations = []
+        for job in active_jobs:
+            match = calculate_match(request.user, job)
+            score = match["overall_score"]
+
+            if score >= 80:
+                level = "Excellent Match"
+            elif score >= 60:
+                level = "Strong Match"
+            elif score >= 40:
+                level = "Good Match"
+            else:
+                level = "Low Match"
+
+            recommendations.append({
+                "job_id": job.id,
+                "title": job.title,
+                "company": job.company,
+                "location": job.location,
+                "description": job.description,
+                "experience_level": job.experience_level,
+                "salary_min": job.salary_min,
+                "salary_max": job.salary_max,
+                "required_skills": job.requirements,
+                "overall_score": score,
+                "skill_score": match["skill_score"],
+                "experience_score": match["experience_score"],
+                "project_score": match["project_score"],
+                "matched_skills": match["matched_skills"],
+                "missing_skills": match["missing_skills"],
+                "recommendation_level": level,
+            })
+
+        recommendations.sort(
+            key=lambda item: (
+                item["overall_score"],
+                item["skill_score"],
+                item["experience_score"],
+            ),
+            reverse=True,
+        )
+
+        results = recommendations[:limit]
+
+        return Response(
+            {
+                "count": len(results),
+                "total_active_jobs": len(recommendations),
+                "results": results,
+            },
+            status=status.HTTP_200_OK,
+        )
 
 
 class AddJobView(APIView):
@@ -68,8 +156,6 @@ class AllJobsView(APIView):
         serializer = JobSerializer(jobs, many=True)
 
         return Response(serializer.data)
-
-from .matcher import calculate_match
 
 class ApplyToJobView(APIView):
     permission_classes = [IsAuthenticated]
